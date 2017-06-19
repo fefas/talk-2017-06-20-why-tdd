@@ -1,0 +1,13 @@
+{
+    "name": "fefas/talk-2017-06-20-why-tdd",
+
+    "type": "project",
+    "license": "MIT License",
+
+    "authors": [
+        {
+            "name": "Felipe Martins",
+            "email": "me@fefas.net"
+        }
+    ]
+}
