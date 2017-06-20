@@ -11,6 +11,12 @@
         }
     ],
 
+    "autoload": {
+        "psr-4": {
+            "TalkWhyTdd\\": "src"
+        }
+    },
+
     "require": {
         "slim/slim": "^3.8"
     },

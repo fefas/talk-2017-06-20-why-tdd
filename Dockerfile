@@ -24,5 +24,6 @@ ADD ./composer.lock /var/www/composer.lock
 RUN composer install
 
 ADD ./behat.yml /var/www/behat.yml
+ADD ./src /var/www/src
 ADD ./tests /var/www/tests
 ADD ./web /var/www/web

@@ -3,14 +3,17 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\App;
+use TalkWhyTdd\Infrastructure\Middlewares\RequestBodyParserMiddleware;
 
 require __DIR__.'/../vendor/autoload.php';
 
 $app = new Slim\App();
 
+$app->add(RequestBodyParserMiddleware::class);
+
 $app->post('/check-username', function (Request $request, Response $response) {
-    $parsedBody = json_decode($request->getBody()->getContents(), true);
-    $username = $parsedBody['username'] ?? null;
+    $requestParsedBody = $request->getParsedBody();
+    $username = $requestParsedBody['username'] ?? null;
 
     if (null === $username) {
         return $response
