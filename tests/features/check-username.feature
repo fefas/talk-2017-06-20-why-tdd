@@ -26,3 +26,18 @@ Feature: Check username format and availability
         "message": "The field 'username' is missing"
       }
       """
+
+  Scenario: The username has an invalid format
+    When I request POST "/check-username" with the following body:
+      """
+      {
+        "username": "-fefas"
+      }
+      """
+    Then the response status code should be 422
+    And the response body should be:
+      """
+      {
+        "message": "The 'username' is not properly formatted"
+      }
+      """

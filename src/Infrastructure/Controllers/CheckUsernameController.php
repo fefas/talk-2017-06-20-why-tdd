@@ -2,8 +2,10 @@
 
 namespace TalkWhyTdd\Infrastructure\Controllers;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use TalkWhyTdd\User\Model\Username;
 
 class CheckUsernameController
 {
@@ -16,6 +18,14 @@ class CheckUsernameController
             return $response
                 ->withStatus(422)
                 ->withJson(['message' => 'The field \'username\' is missing']);
+        }
+
+        try {
+            new Username($username);
+        } catch (InvalidArgumentException $e) {
+            return $response
+                ->withStatus(422)
+                ->withJson(['message' => 'The \'username\' is not properly formatted']);
         }
 
         return $response->withStatus(200);
