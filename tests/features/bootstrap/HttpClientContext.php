@@ -3,6 +3,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\ClientException as HttpClientExpcetion;
 
 class HttpClientContext implements Context
 {
@@ -17,9 +18,13 @@ class HttpClientContext implements Context
             'base_uri' => 'http://nginx',
         ]);
 
-        $this->httpResponse = $httpClient->post($uri, [
-            'body' => $body->getRaw(),
-        ]);
+        try {
+            $this->httpResponse = $httpClient->post($uri, [
+                'body' => $body->getRaw(),
+            ]);
+        } catch (HttpClientExpcetion $e) {
+            $this->httpResponse = $e->getResponse();
+        }
     }
 
     /**
@@ -36,5 +41,16 @@ class HttpClientContext implements Context
     public function theResponseBodyShouldBeEmpty()
     {
         assertEmpty($this->httpResponse->getBody()->getContents());
+    }
+
+   /**
+     * @Then the response body should be:
+     */
+    public function theResponseBodyShouldBe(PyStringNode $expectedBody)
+    {
+        assertJsonStringEqualsJsonString(
+            $expectedBody->getRaw(),
+            $this->httpResponse->getBody()->getContents()
+        );
     }
 }
