@@ -1,0 +1,18 @@
+version: "2"
+
+services:
+    nginx:
+        build:
+            context: ./nginx
+        ports:
+            - "8080:80"
+        links:
+            - phpfpm
+
+    phpfpm:
+        build:
+            context: .
+        volumes:
+            - ./behat.yml:/var/www/behat.yml
+            - ./tests:/var/www/tests
+            - ./web:/var/www/web
