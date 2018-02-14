@@ -13,7 +13,10 @@ services:
         build:
             context: .
         volumes:
-            - ./behat.yml:/var/www/behat.yml
-            - ./src:/var/www/src
-            - ./tests:/var/www/tests
-            - ./web:/var/www/web
+            - ./composer.json:/usr/local/src/composer.json
+            - ./composer.lock:/usr/local/src/composer.lock
+            - ./behat.yml:/usr/local/src/behat.yml
+            - ./phpunit.xml:/usr/local/src/phpunit.yml
+            - ./src:/usr/local/src/src
+            - ./tests:/usr/local/src/tests
+            - ./web:/usr/local/src/web

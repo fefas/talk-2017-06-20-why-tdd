@@ -7,23 +7,28 @@ use GuzzleHttp\Exception\ClientException as HttpClientExpcetion;
 
 class HttpClientContext implements Context
 {
-    private $httpResponse = null;
+    private $client;
+    private $response;
+
+    public function __construct()
+    {
+        $this->client = new HttpClient([
+            'base_uri' => 'http://nginx',
+        ]);
+
+    }
 
     /**
      * @When I request POST :uri with the following body:
      */
     public function iRequestPostWithTheFollowingBody($uri, PyStringNode $body)
     {
-        $httpClient = new HttpClient([
-            'base_uri' => 'http://nginx',
-        ]);
-
         try {
-            $this->httpResponse = $httpClient->post($uri, [
+            $this->response = $httpClient->post($uri, [
                 'body' => $body->getRaw(),
             ]);
         } catch (HttpClientExpcetion $e) {
-            $this->httpResponse = $e->getResponse();
+            $this->response = $e->getResponse();
         }
     }
 
@@ -32,7 +37,9 @@ class HttpClientContext implements Context
      */
     public function theResponseStatusCodeShouldBe($expectedStatusCode)
     {
-        assertEquals($expectedStatusCode, $this->httpResponse->getStatusCode());
+        $statusCode = $this->response->getStatusCode();
+
+        assertEquals($expectedStatusCode, $statusCode);
     }
 
     /**
@@ -40,17 +47,18 @@ class HttpClientContext implements Context
      */
     public function theResponseBodyShouldBeEmpty()
     {
-        assertEmpty($this->httpResponse->getBody()->getContents());
+        $body = $this->response->getBody()->getContents();
+
+        assertEmpty($body);
     }
 
    /**
      * @Then the response body should be:
      */
-    public function theResponseBodyShouldBe(PyStringNode $expectedBody)
+    public function theResponseBodyShouldBe(string $expectedBody)
     {
-        assertJsonStringEqualsJsonString(
-            $expectedBody->getRaw(),
-            $this->httpResponse->getBody()->getContents()
-        );
+        $body = $this->response->getBody()->getContents();
+
+        assertJsonStringEqualsJsonString($expectedBody, $body);
     }
 }

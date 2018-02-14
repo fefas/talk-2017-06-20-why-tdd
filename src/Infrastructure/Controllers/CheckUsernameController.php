@@ -4,7 +4,7 @@ namespace TalkWhyTdd\Infrastructure\Controllers;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Response;
 use TalkWhyTdd\User\Model\Username;
 
 class CheckUsernameController
