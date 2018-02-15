@@ -15,16 +15,15 @@ class HttpClientContext implements Context
         $this->client = new HttpClient([
             'base_uri' => 'http://nginx',
         ]);
-
     }
 
     /**
-     * @When I request POST :uri with the following body:
+     * @When I request :method :uri with the following body:
      */
-    public function iRequestPostWithTheFollowingBody($uri, PyStringNode $body)
+    public function iRequestPostWithTheFollowingBody($method, $uri, PyStringNode $body)
     {
         try {
-            $this->response = $httpClient->post($uri, [
+            $this->response = $this->client->request($method, $uri, [
                 'body' => $body->getRaw(),
             ]);
         } catch (HttpClientExpcetion $e) {

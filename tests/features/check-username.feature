@@ -4,7 +4,7 @@ Feature: Check username format and availability
   I want to request POST /check-username with the username in the body
 
   Scenario: The username has a valid format and is available
-    When I request POST "/check-username" with the following body:
+    When I request "POST" "/check-username" with the following body:
       """
       {
         "username": "fefas"
@@ -14,7 +14,7 @@ Feature: Check username format and availability
     And the response body should be empty
 
   Scenario: The username is not provided
-    When I request POST "/check-username" with the following body:
+    When I request "POST" "/check-username" with the following body:
       """
       {
       }
@@ -28,7 +28,7 @@ Feature: Check username format and availability
       """
 
   Scenario: The username has an invalid format
-    When I request POST "/check-username" with the following body:
+    When I request "POST" "/check-username" with the following body:
       """
       {
         "username": "-fefas"
